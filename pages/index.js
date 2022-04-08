@@ -9,7 +9,7 @@ export default function Home() {
   console.log(solanaWeb3);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const fetchAccount = async () => {
       const response = await fetch(`/api/hello`, {
         method: "GET",
         headers: {
@@ -22,10 +22,10 @@ export default function Home() {
       }
 
       const data = await response.json();
-      setData(data.name)
+      // setData(data)
     }
 
-    fetchUser();
+    fetchAccount();
   }, []);
 
   return (

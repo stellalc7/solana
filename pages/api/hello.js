@@ -1,8 +1,27 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+// import * as solanaWeb3 from '@solana/web3.js';
+
 
 export default function handler(req, res) {
-  res.status(200).json({ name: 'John Doe' })
+  // fetch(url, {
+  //   method: 'POST',
+  //   url: 'http://localhost:8899',
+  //   headers: { 'Content-Type': 'application/json' },
+  //   body:  '{"jsonrpc":"2.0","id":1, "method":"getLargestAccounts"}'
+  // })
+  //   .then(apiResponse => apiResponse.json())
+  //   .then(data => res.send(data))
+  //   .catch(error => res.send(error));
+  const web3 = require("@solana/web3.js");
+  (async () => {
+    const solana = new web3.Connection("http://sample-endpoint-name.network.quiknode.pro/token-goes-here/");
+    console.log(await solana.getLargestAccounts());
+  })();
+
+
+  // res.status(200).json({ name: 'John Doe' })
 }
+
 
 // import * as web3 from '@solana/web3.js';
 
