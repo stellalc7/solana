@@ -6,7 +6,7 @@ import React, { useState, useEffect } from 'react'
 export default function Home() {
   const [data, setData] = useState(null)
   
-  console.log(solanaWeb3);
+  // console.log(solanaWeb3);
 
   useEffect(() => {
     const fetchAccount = async () => {
@@ -24,6 +24,7 @@ export default function Home() {
 
       const resp = await response.json();
       setData(resp)
+      console.log(resp)
     }
 
     fetchAccount();
