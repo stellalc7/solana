@@ -1,43 +1,42 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import React, { useState, useEffect } from 'react'
+import { LineChart, Line } from 'recharts'
 
 export default function Home() {
   const [balances, setBalances] = useState(null);      // top 20 balances (lamports to SOL)
   const [conversion, setConversion] = useState(null);  // exchange rate - SOL : USD
-  const [currency, setCurrency] = useState('SOL');     // default currency SOL
+  const [currency, setCurrency] = useState('SOL');     // currency toggle SOL : USD
   const [USD, setUSD] = useState([]);                  // balances in USD
-  // const [SOL, setSOL] = useState([]);                  // balances in SOL
   const SOLperLAM = 0.000000001;
   let solana, dollars;
   
   useEffect(() => {
-    const fetchBalances = () => {
-      fetch('/api/solana', {
+    const fetchBalances = async () => {
+      const response = await fetch('/api/solana', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-      })
-        .then(response => response.json())
-        .then(data => setBalances(data.value.map(function (balance) { return balance.lamports  * SOLperLAM })))
-        
-        if (conversion) setUSD(balances.map(function (balance) { return balance * conversion }))
+      });
+      const resp = await response.json();
+      setBalances(resp.value.map(function (balance) { return balance.lamports  * SOLperLAM }));
+      if (balances) setUSD(balances.map(function (balance) { return balance * conversion }));
     }
 
-    const fetchConversion = () => {
-      fetch('/api/converter', {
+    const fetchConversion = async () => {
+      const response = await fetch('/api/converter', {
         method: 'GET',
-      })
-        .then(response => response.json())
-        .then(data => setConversion(data.last_price_usd))
+      });
+      const resp = await response.json();
+      setConversion(resp.last_price_usd)
     }
 
     fetchBalances();
     fetchConversion();
   }, [balances, conversion]);
-  
+
   if (balances) {
     solana =
       balances.map((balance, idx) => (
@@ -49,6 +48,14 @@ export default function Home() {
         <div key={idx}>{dollar}</div>
       ))
   }
+
+  // const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}];
+
+  // const renderLineChart = (
+  //   <LineChart width={400} height={400} data={data}>
+  //     <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+  //   </LineChart>
+  // );
 
   return (
     <div className={styles.container}>
@@ -62,12 +69,8 @@ export default function Home() {
         <button
           onClick={() => currency === 'SOL' ? setCurrency('USD') : setCurrency('SOL')}
         >
-          CONVERT TO {currency === 'SOL' ? ' USD' : ' SOL'}
+          {currency === 'SOL' ? 'USD' : 'SOL'}
         </button>
-
-        <br></br>
-
-        {currency}<br></br>
 
         <div>
           { balances && currency === 'SOL' ? solana : dollars }
