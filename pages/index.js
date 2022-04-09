@@ -66,19 +66,20 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <button
-          onClick={() => currency === 'SOL' ? setCurrency('USD') : setCurrency('SOL')}
-        >
-          {currency === 'SOL' ? 'USD' : 'SOL'}
-        </button>
+       🧚‍♀️✨ {currency} ✨🧚‍♀️<br></br><br></br>
 
         <div>
           { balances && currency === 'SOL' ? solana : dollars }
         </div>
       </main>
 
-      {/* <footer className={styles.footer}>
-      </footer> */}
+      <footer className={styles.footer}>
+        <button
+          onClick={() => currency === 'SOL' ? setCurrency('USD') : setCurrency('SOL')}
+        >CONVERT TO 
+          {currency === 'SOL' ? ' USD' : ' SOL'}
+        </button>
+      </footer>
     </div>
   )
 }
