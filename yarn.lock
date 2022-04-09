@@ -1785,6 +1785,11 @@
   dependencies:
     "reusify" "^1.0.4"
 
+"figment@^0.0.0":
+  "integrity" "sha1-xANPZ3x0sU3BTKZ3x70ZJ+TpOYg="
+  "resolved" "https://registry.npmjs.org/figment/-/figment-0.0.0.tgz"
+  "version" "0.0.0"
+
 "file-entry-cache@^6.0.1":
   "integrity" "sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg=="
   "resolved" "https://registry.npmjs.org/file-entry-cache/-/file-entry-cache-6.0.1.tgz"

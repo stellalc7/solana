@@ -10,19 +10,20 @@ export default function Home() {
 
   useEffect(() => {
     const fetchAccount = async () => {
-      const response = await fetch(`/api/hello`, {
-        method: "GET",
+      const response = await fetch('/api/hello', {
+        method: 'GET',
         headers: {
-          "Content-Type": "application/json"
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
       });
 
-      if (!response.ok) {
-        throw new Error(`Error: ${response.status}`);
-      }
+      // if (!response.ok) {
+      //   throw new Error(`Error: ${response.status}`);
+      // }
 
-      const data = await response.json();
-      // setData(data)
+      const resp = await response.json();
+      setData(resp)
     }
 
     fetchAccount();
