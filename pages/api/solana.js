@@ -10,9 +10,6 @@ export default async function balance(req, res) {
     const connection = new Connection(url, 'confirmed');
     console.log(connection)
     const balance = await connection.getLargestAccounts();
-    // if (balance === 0 || balance === undefined) {
-    //   throw new Error('Account not funded');
-    // }
     res.status(200).json(balance);
   // } catch (error) {
   //   let errorMessage = error instanceof Error ? error.message : 'Unknown Error';

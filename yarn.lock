@@ -944,6 +944,11 @@
   dependencies:
     "mimic-response" "^1.0.0"
 
+"coincodex-api@^1.0.0":
+  "integrity" "sha512-Pf/tYp4r/YhUsQKw9WcFJ/TR0s7Rb6bnuL+/YqCgbScJNCXSVlmcXlWfPyt3ncOQJts63nkxXKBQQmVqWcx9sw=="
+  "resolved" "https://registry.npmjs.org/coincodex-api/-/coincodex-api-1.0.0.tgz"
+  "version" "1.0.0"
+
 "color-convert@^2.0.1":
   "integrity" "sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ=="
   "resolved" "https://registry.npmjs.org/color-convert/-/color-convert-2.0.1.tgz"
