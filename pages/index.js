@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import React, { useState, useEffect } from 'react'
-import { sendStatusCode } from 'next/dist/server/api-utils';
 
 export default function Home() {
   const [balances, setBalances] = useState(null);      // top 20 balances (lamports to SOL)
@@ -13,37 +12,32 @@ export default function Home() {
   let solana, dollars;
   
   useEffect(() => {
-    const fetchBalances = async () => {
-      const response = await fetch('/api/solana', {
+    const fetchBalances = () => {
+      fetch('/api/solana', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-      });
-      // if (!response.ok) {
-      //   throw new Error(`Error: ${response.status}`);
-      // }
-      const resp = await response.json();
-      setBalances(resp.value.map(function (balance) { return balance.lamports  * SOLperLAM }));
+      })
+        .then(response => response.json())
+        .then(data => setBalances(data.value.map(function (balance) { return balance.lamports  * SOLperLAM })))
+        
+        if (conversion) setUSD(balances.map(function (balance) { return balance * conversion }))
     }
 
-    const fetchConversion = async () => {
-      const response = await fetch('/api/converter', {
+    const fetchConversion = () => {
+      fetch('/api/converter', {
         method: 'GET',
-      });
-      // if (!response.ok) {
-      //   throw new Error(`Error: ${response.status}`);
-      // }
-      const resp = await response.json();
-      setConversion(resp.last_price_usd)
-      if (balances) setUSD(balances.map(function (balance) { return balance * conversion }))
+      })
+        .then(response => response.json())
+        .then(data => setConversion(data.last_price_usd))
     }
 
     fetchBalances();
     fetchConversion();
-  }, []);
-
+  }, [balances, conversion]);
+  
   if (balances) {
     solana =
       balances.map((balance, idx) => (
@@ -68,8 +62,12 @@ export default function Home() {
         <button
           onClick={() => currency === 'SOL' ? setCurrency('USD') : setCurrency('SOL')}
         >
-          {currency === 'SOL' ? 'USD' : 'SOL'}
+          CONVERT TO {currency === 'SOL' ? ' USD' : ' SOL'}
         </button>
+
+        <br></br>
+
+        {currency}<br></br>
 
         <div>
           { balances && currency === 'SOL' ? solana : dollars }
