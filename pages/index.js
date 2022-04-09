@@ -35,7 +35,7 @@ export default function Home() {
 
     fetchBalances();
     fetchConversion();
-  }, [balances, conversion]);
+  }, [balances]);
 
   if (balances) {
     solana =
