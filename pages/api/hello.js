@@ -1,10 +1,6 @@
-// Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-// const web3 = require("@solana/web3.js");
-
 import { Connection,
          PublicKey,
          LAMPORTS_PER_SOL,
-        //  GetLargestAccountsConfig
        } from '@solana/web3.js';
 
 export default async function balance(req, res) {

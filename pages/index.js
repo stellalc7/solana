@@ -4,12 +4,12 @@ import * as solanaWeb3 from '@solana/web3.js';
 import React, { useState, useEffect } from 'react'
 
 export default function Home() {
-  const [data, setData] = useState(null)
+  const [balances, setBalances] = useState(null)
   
   // console.log(solanaWeb3);
 
   useEffect(() => {
-    const fetchAccount = async () => {
+    const fetchBalances = async () => {
       const response = await fetch('/api/hello', {
         method: 'GET',
         headers: {
@@ -23,11 +23,11 @@ export default function Home() {
       // }
 
       const resp = await response.json();
-      setData(resp)
-      console.log(resp)
+      setBalances(resp.value)
+      console.log(resp.value)
     }
 
-    fetchAccount();
+    fetchBalances();
   }, []);
 
   return (
@@ -39,7 +39,12 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <div>{data}</div>
+        <div>
+          {balances ?
+            balances.map((balance, idx) => (
+              <div key={idx}>{balance.lamports}</div>
+            )) : ''}
+        </div>
       </main>
 
       {/* <footer className={styles.footer}>
