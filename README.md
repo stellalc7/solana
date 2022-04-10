@@ -13,6 +13,6 @@ yarn dev
 
 ### Technologies
 - next.js
+- solana-web3.js API `/api/solana.js` for top 20 largest accounts
+- coincodex API `/api/converter.js` for SOL : USD exchange rate
 - recharts `visualization`
-- solana-web3.js API `getLargestAccounts()`
-- coincodex API `exchange rate`
