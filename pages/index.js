@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import React, { useState, useEffect } from 'react'
-import { LineChart, Line } from 'recharts'
+// import { LineChart, Line } from 'recharts'
 
 export default function Home() {
   const [balances, setBalances] = useState(null);      // top 20 balances (lamports to SOL)
@@ -10,6 +10,7 @@ export default function Home() {
   const [USD, setUSD] = useState([]);                  // balances in USD
   const SOLperLAM = 0.000000001;
   let solana, dollars;
+  let data = {};
   
   useEffect(() => {
     const fetchBalances = async () => {
@@ -22,7 +23,7 @@ export default function Home() {
       });
       const resp = await response.json();
       setBalances(resp.value.map(function (balance) { return balance.lamports  * SOLperLAM }));
-      if (balances) setUSD(balances.map(function (balance) { return balance / conversion }));
+      if (balances) setUSD(balances.map(function (balance) { return balance * conversion }));
     }
 
     const fetchConversion = async () => {
@@ -35,7 +36,7 @@ export default function Home() {
 
     fetchBalances();
     fetchConversion();
-  }, [balances, conversion]);
+  }, [balances, conversion]);           // fix!! infinite rerendering
 
   if (balances) {
     solana =
@@ -47,6 +48,10 @@ export default function Home() {
       USD.map((dollar, idx) => (
         <div key={idx}>{dollar}</div>
       ))
+
+    // console.log(balances)
+
+    // var object = USD.reduce((item) => ({'usd': item)} ,{});
   }
 
   // const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}];
@@ -66,6 +71,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        <div>TOP 20 SOLANA BALANCES</div>
        🧚‍♀️✨ {currency} ✨🧚‍♀️<br></br><br></br>
 
         <div>
@@ -76,8 +82,8 @@ export default function Home() {
       <footer className={styles.footer}>
         <button
           onClick={() => currency === 'SOL' ? setCurrency('USD') : setCurrency('SOL')}
-        >CONVERT TO 
-          {currency === 'SOL' ? ' USD' : ' SOL'}
+        >
+          CONVERT TO {currency === 'SOL' ? ' USD' : ' SOL'}
         </button>
       </footer>
     </div>
