@@ -57,9 +57,9 @@ export default function Home() {
 
   const renderLineChart = (
     <LineChart width={600} height={300} data={balances} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-      <Line type="monotone" dataKey="lamports" stroke="#8884d8" />
+      <Line type="monotone" dataKey={`${currency}`} stroke="#8884d8" />
       <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-      <XAxis dataKey={`${currency}`}  />
+      <XAxis dataKey="address"  />
       <YAxis />
       <Tooltip />
     </LineChart>
@@ -75,8 +75,9 @@ export default function Home() {
 
       <main className={styles.main}>
 
-        <div>TOP 20 SOLANA BALANCES</div>
-        🧚‍♀️✨ {currency} ✨🧚‍♀️<br></br><br></br>
+        <div className={styles.header}>
+          🧚‍♀️✨ TOP 20 SOLANA BALANCES : {currency} ✨🧚‍♀️
+          </div>
         {balances ? renderLineChart : null}
 
         {/* <div>

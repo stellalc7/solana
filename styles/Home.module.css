@@ -14,6 +14,11 @@
   text-align: right;
 }
 
+.header {
+  font-size: 25px;
+  margin-bottom: 50px;
+}
+
 .footer {
   display: flex;
   flex: 1;
