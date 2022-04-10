@@ -1,4 +1,4 @@
-## ```Visualize the top 20 Solana balances!```
+### ```Solana Visualization```
 
 ### Run the development server:
 
