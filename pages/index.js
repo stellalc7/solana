@@ -22,7 +22,7 @@ export default function Home() {
       });
       const resp = await response.json();
       setBalances(resp.value.map(function (balance) { return balance.lamports  * SOLperLAM }));
-      if (balances) setUSD(balances.map(function (balance) { return balance * conversion }));
+      if (balances) setUSD(balances.map(function (balance) { return balance / conversion }));
     }
 
     const fetchConversion = async () => {
@@ -35,7 +35,7 @@ export default function Home() {
 
     fetchBalances();
     fetchConversion();
-  }, [balances]);
+  }, [balances, conversion]);
 
   if (balances) {
     solana =
