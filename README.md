@@ -1,6 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## ```Visualize the top 20 Solana balances!```
 
-### To run the development server:
+### Run the development server:
 
 ```bash
 npm run dev
@@ -10,4 +10,4 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### Deloyed on vercel[https://solana-gold.vercel.app/] !
+### Deloyed on [vercel](https://solana-gold.vercel.app/) !
