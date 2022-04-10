@@ -7,9 +7,8 @@ export default function Home() {
   const [balances, setBalances] = useState(null);      // top 20 balances (lamports to SOL)
   const [conversion, setConversion] = useState(null);  // exchange rate - SOL : USD
   const [currency, setCurrency] = useState('SOL');     // currency toggle SOL : USD
-  const [USD, setUSD] = useState([]);                  // balances in USD
   const SOLperLAM = 0.000000001;                       // A lamport has a value of 0.000000001 SOL.
-  let solana, dollars;
+  // let solana, dollars;
   
   useEffect(() => {
     const fetchBalances = async () => {
@@ -21,10 +20,7 @@ export default function Home() {
         },
       });
       const resp = await response.json();
-      setBalances(Object.values(resp.value))
-      console.log(resp.value)
-      // setBalances(resp.value.map(function (balance) { return balance.lamports  * SOLperLAM }));
-      // if (balances) setUSD(balances.map(function (balance) { return balance * conversion }));
+      setBalances(Object.values(resp.value));
     }
 
     const fetchConversion = async () => {
@@ -37,23 +33,24 @@ export default function Home() {
 
     fetchBalances();
     fetchConversion();
-  }, []);           // fix!! infinite rerendering
+  }, []);
+
 
   if (balances) {
-    solana =
-      balances.map((balance, idx) => (
-        <div key={idx}>{balance.lamports}</div>
-      ))
+    balances.map(balance => {
+      balance['USD'] = balance.lamports * SOLperLAM * conversion;
+      balance['SOL'] = balance.lamports * SOLperLAM;
+    })
 
-    dollars =
-      <></>
-      // USD.map((dollar, idx) => (
-      //   <div key={idx}>{dollar}</div>
-      // ))
+    // solana =
+    //   balances.map((balance, idx) => (
+    //     <div key={idx}>{balance.sol}</div>
+    //   ))
 
-    // console.log(balances)
-
-    // var object = USD.reduce((item) => ({'usd': item)} ,{});
+    // dollars =
+    //   balances.map((balance, idx) => (
+    //     <div key={idx}>{balance.usd}</div>
+    //   ))
   }
 
   // const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}];
@@ -62,7 +59,7 @@ export default function Home() {
     <LineChart width={600} height={300} data={balances} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
       <Line type="monotone" dataKey="lamports" stroke="#8884d8" />
       <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-      <XAxis dataKey="address" />
+      <XAxis dataKey={`${currency}`}  />
       <YAxis />
       <Tooltip />
     </LineChart>
@@ -77,13 +74,14 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        {renderLineChart}
-        <div>TOP 20 SOLANA BALANCES</div>
-       🧚‍♀️✨ {currency} ✨🧚‍♀️<br></br><br></br>
 
-        <div>
+        <div>TOP 20 SOLANA BALANCES</div>
+        🧚‍♀️✨ {currency} ✨🧚‍♀️<br></br><br></br>
+        {balances ? renderLineChart : null}
+
+        {/* <div>
           { balances && currency === 'SOL' ? solana : dollars }
-        </div>
+        </div> */}
       </main>
 
       <footer className={styles.footer}>
