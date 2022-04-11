@@ -38,9 +38,11 @@ export default function Home() {
 
   if (balances) {
     balances.map(balance => {
-      balance['USD'] = balance.lamports * SOLperLAM * conversion;
-      balance['SOL'] = balance.lamports * SOLperLAM;
+      balance['USD (in billions)'] = balance.lamports * SOLperLAM * conversion / 1000000000; // billions
+      balance['SOL (in millions)'] = balance.lamports * SOLperLAM  / 1000000;                // millions
     })
+
+    console.log(balances)
 
     // solana =
     //   balances.map((balance, idx) => (
@@ -55,12 +57,14 @@ export default function Home() {
 
   // const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}];
 
+  const scaledValues = currency === 'USD' ? 'USD (in billions)' : 'SOL (in millions)';
+
   const renderLineChart = (
     <LineChart width={600} height={300} data={balances} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-      <Line type="monotone" dataKey={`${currency}`} stroke="#8884d8" />
+      <Line type="monotone" dataKey={`${scaledValues}`} stroke="#8884d8" />
       <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-      <XAxis dataKey="address"  />
-      <YAxis />
+      <XAxis dataKey="address" tick={false} label={{ value: "Address", position: "insideBottom", dy: 10}} />
+      <YAxis label={{ value: `${scaledValues}`, position: "inside", angle: -90, dx: -25 }} />
       <Tooltip />
     </LineChart>
   );
@@ -75,9 +79,12 @@ export default function Home() {
 
       <main className={styles.main}>
 
+        {/* HEADER */}
         <div className={styles.header}>
-          🧚‍♀️✨ TOP 20 SOLANA BALANCES : {currency} ✨🧚‍♀️
-          </div>
+          TOP 20 SOLANA BALANCES : {currency}
+        </div>
+
+        {/* VISUALIZATION */}
         {balances ? renderLineChart : null}
 
         {/* <div>
@@ -86,6 +93,7 @@ export default function Home() {
       </main>
 
       <footer className={styles.footer}>
+        {/* CURRENCY TOGGLE */}
         <button
           onClick={() => currency === 'SOL' ? setCurrency('USD') : setCurrency('SOL')}
         >
