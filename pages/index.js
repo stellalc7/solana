@@ -4,14 +4,13 @@ import React, { useState, useEffect } from 'react'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 
 export default function Home() {
-  const [balances, setBalances] = useState(null);      // top 20 balances (lamports to SOL)
+  const [accounts, setAccounts] = useState(null);      // 20 largest accounts
   const [conversion, setConversion] = useState(null);  // exchange rate - SOL : USD
   const [currency, setCurrency] = useState('SOL');     // currency toggle SOL : USD
   const SOLperLAM = 0.000000001;                       // A lamport has a value of 0.000000001 SOL.
-  // let solana, dollars;
   
   useEffect(() => {
-    const fetchBalances = async () => {
+    const fetchAccounts = async () => {
       const response = await fetch('/api/solana', {
         method: 'GET',
         headers: {
@@ -20,7 +19,7 @@ export default function Home() {
         },
       });
       const resp = await response.json();
-      setBalances(Object.values(resp.value));
+      setAccounts(Object.values(resp.value));
     }
 
     const fetchConversion = async () => {
@@ -31,37 +30,26 @@ export default function Home() {
       setConversion(resp.last_price_usd)
     }
 
-    fetchBalances();
+    fetchAccounts();
     fetchConversion();
   }, []);
 
-
-  if (balances) {
-    balances.map(balance => {
-      balance['USD (billions)'] = balance.lamports * SOLperLAM * conversion / 1000000000;
-      balance['SOL (millions)'] = balance.lamports * SOLperLAM  / 1000000;
+  // add USD, SOL keys/conversions to accounts for viz
+  if (accounts) {
+    accounts.map(account => {
+      account['USD (billions)'] = account.lamports * SOLperLAM * conversion / 1000000000;
+      account['SOL (millions)'] = account.lamports * SOLperLAM  / 1000000;
     });
-
-    // solana =
-    //   balances.map((balance, idx) => (
-    //     <div key={idx}>{balance.sol}</div>
-    //   ))
-
-    // dollars =
-    //   balances.map((balance, idx) => (
-    //     <div key={idx}>{balance.usd}</div>
-    //   ))
   }
 
-  // const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}];
-
+  // create labels for viz
   const scaledValues = currency === 'USD' ? 'USD (billions)' : 'SOL (millions)';
 
   const renderLineChart = (
     <LineChart
       width={650}
       height={400}
-      data={balances}
+      data={accounts}
       margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
     >
       <Line
@@ -93,15 +81,10 @@ export default function Home() {
         <div className={styles.header}>
           ✨ 20 Largest Solana Accounts ✨<br></br>
           ({currency})
-
         </div>
 
         {/* VISUALIZATION */}
-        {balances ? renderLineChart : <h1>LOADING ...</h1>}
-
-        {/* <div>
-          { balances && currency === 'SOL' ? solana : dollars }
-        </div> */}
+        {accounts ? renderLineChart : <h1>... LOADING ...</h1>}
       </main>
 
       <footer className={styles.footer}>
