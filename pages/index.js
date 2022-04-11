@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 
 export default function Home() {
+  const [loading, setLoading] = useState(true);
   const [balances, setBalances] = useState(null);      // top 20 balances (lamports to SOL)
   const [conversion, setConversion] = useState(null);  // exchange rate - SOL : USD
   const [currency, setCurrency] = useState('SOL');     // currency toggle SOL : USD
@@ -38,11 +39,9 @@ export default function Home() {
 
   if (balances) {
     balances.map(balance => {
-      balance['USD (in billions)'] = balance.lamports * SOLperLAM * conversion / 1000000000; // billions
-      balance['SOL (in millions)'] = balance.lamports * SOLperLAM  / 1000000;                // millions
+      balance['USD (billions)'] = balance.lamports * SOLperLAM * conversion / 1000000000;  // in billions
+      balance['SOL (millions)'] = balance.lamports * SOLperLAM  / 1000000;                 // in millions
     })
-
-    console.log(balances)
 
     // solana =
     //   balances.map((balance, idx) => (
@@ -57,14 +56,27 @@ export default function Home() {
 
   // const data = [{name: 'Page A', uv: 400, pv: 2400, amt: 2400}];
 
-  const scaledValues = currency === 'USD' ? 'USD (in billions)' : 'SOL (in millions)';
+  const scaledValues = currency === 'USD' ? 'USD (billions)' : 'SOL (millions)';
 
   const renderLineChart = (
-    <LineChart width={650} height={400} data={balances} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-      <Line type="monotone" dataKey={`${scaledValues}`} stroke="#000" />
-      <CartesianGrid stroke="#2b2b2b" strokeDasharray="1 1" />
-      <XAxis dataKey="address" tick={false} label={{ value: "Address", position: "insideBottom", dy: 10}} />
-      <YAxis label={{ value: `${scaledValues}`, position: "inside", angle: -90, dx: -25 }} />
+    <LineChart
+      width={650}
+      height={400}
+      data={balances}
+      margin={{ top: 5, right: 20, bottom: 5, left: 0 }}
+    >
+      <Line
+        type="monotone"
+        dataKey={`${scaledValues}`}
+        stroke="#000" />
+      <CartesianGrid
+        stroke="#2b2b2b"
+        strokeDasharray="1 1" />
+      <XAxis
+        dataKey="address" tick={false}
+        label={{ value: "Address", position: "insideBottom", dy: 10}} />
+      <YAxis
+        label={{ value: `${scaledValues}`, position: "inside", angle: -90, dx: -25 }} />
       <Tooltip />
     </LineChart>
   );
@@ -73,15 +85,14 @@ export default function Home() {
     <div className={styles.container}>
       <Head>
         <title>SOLANA</title>
-        <meta name="description" content="Largest Solana account balances" />
+        <meta name="description" content="20 largest Solana accounts" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
-
         {/* HEADER */}
         <div className={styles.header}>
-          🌼 20 Largest Solana Accounts 🌼<br></br>
+          ✨ 20 Largest Solana Accounts ✨<br></br>
           ({currency})
 
         </div>
