@@ -37,13 +37,13 @@ export default function Home() {
   // add USD, SOL keys/conversions to accounts for viz
   if (accounts) {
     accounts.map(account => {
-      account['USD (billions)'] = account.lamports * SOLperLAM * conversion / 1000000000;
-      account['SOL (millions)'] = account.lamports * SOLperLAM  / 1000000;
+      account['USD (billion)'] = account.lamports * SOLperLAM * conversion / 1000000000;
+      account['SOL (million)'] = account.lamports * SOLperLAM  / 1000000;
     });
   }
 
   // create labels for viz
-  const scaledValues = currency === 'USD' ? 'USD (billions)' : 'SOL (millions)';
+  const scaledValues = currency === 'USD' ? 'USD (billion)' : 'SOL (million)';
 
   const renderLineChart = (
     <LineChart
