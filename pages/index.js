@@ -60,9 +60,9 @@ export default function Home() {
   const scaledValues = currency === 'USD' ? 'USD (in billions)' : 'SOL (in millions)';
 
   const renderLineChart = (
-    <LineChart width={600} height={300} data={balances} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-      <Line type="monotone" dataKey={`${scaledValues}`} stroke="#8884d8" />
-      <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+    <LineChart width={650} height={400} data={balances} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
+      <Line type="monotone" dataKey={`${scaledValues}`} stroke="#000" />
+      <CartesianGrid stroke="#2b2b2b" strokeDasharray="1 1" />
       <XAxis dataKey="address" tick={false} label={{ value: "Address", position: "insideBottom", dy: 10}} />
       <YAxis label={{ value: `${scaledValues}`, position: "inside", angle: -90, dx: -25 }} />
       <Tooltip />
@@ -81,7 +81,9 @@ export default function Home() {
 
         {/* HEADER */}
         <div className={styles.header}>
-          TOP 20 SOLANA BALANCES : {currency}
+          🌼 20 Largest Solana Accounts 🌼<br></br>
+          ({currency})
+
         </div>
 
         {/* VISUALIZATION */}
