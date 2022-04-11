@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 
 export default function Home() {
-  const [loading, setLoading] = useState(true);
   const [balances, setBalances] = useState(null);      // top 20 balances (lamports to SOL)
   const [conversion, setConversion] = useState(null);  // exchange rate - SOL : USD
   const [currency, setCurrency] = useState('SOL');     // currency toggle SOL : USD
@@ -39,9 +38,9 @@ export default function Home() {
 
   if (balances) {
     balances.map(balance => {
-      balance['USD (billions)'] = balance.lamports * SOLperLAM * conversion / 1000000000;  // in billions
-      balance['SOL (millions)'] = balance.lamports * SOLperLAM  / 1000000;                 // in millions
-    })
+      balance['USD (billions)'] = balance.lamports * SOLperLAM * conversion / 1000000000;
+      balance['SOL (millions)'] = balance.lamports * SOLperLAM  / 1000000;
+    });
 
     // solana =
     //   balances.map((balance, idx) => (
@@ -98,7 +97,7 @@ export default function Home() {
         </div>
 
         {/* VISUALIZATION */}
-        {balances ? renderLineChart : null}
+        {balances ? renderLineChart : <h1>LOADING ...</h1>}
 
         {/* <div>
           { balances && currency === 'SOL' ? solana : dollars }

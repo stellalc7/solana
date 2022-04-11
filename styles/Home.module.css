@@ -21,12 +21,11 @@
 }
 
 .footer {
-  display: flex;
-  flex: 1;
-  /* padding: 2rem 0; */
-  justify-content: center;
-  align-items: center;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 30px;
+  bottom: 50px;
 }
 
 .footer a {
