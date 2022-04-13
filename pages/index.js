@@ -22,10 +22,11 @@ export default function Home() {
       });
       const accountsData = await response.json();
 
-      if (Object.keys(accountsData).length === 0) {      // empty object, denotes error
+      if (Object.keys(accountsData).length === 0) {      // empty object from solana API denotes error
         setAccountsError('Cannot grab accounts right now, try again later.')
       } else {
         setAccounts(Object.values(accountsData.value));
+        setAccountsError('')                             // clear error cache
       }
     }
 
@@ -35,11 +36,12 @@ export default function Home() {
       });
       const conversion = await response.json();
       // console.log(conversion)
-      
+
       if (conversion.message) {
         setConversionError(conversion.message)
       } else {
         setConversion(conversion.last_price_usd)
+        setConversionError('')                          // clear error cache
       }
     }
 
@@ -48,7 +50,8 @@ export default function Home() {
   }, []);
 
   // add USD, SOL keys/conversions to accounts for viz
-  if (accounts) {
+  // if we fetched accounts + conversion
+  if (accounts && conversionError.length === 0) {
     accounts.map(account => {
       account['USD (billion)'] = account.lamports * SOLperLAM * conversion / 1000000000;
       account['SOL (million)'] = account.lamports * SOLperLAM  / 1000000;
@@ -81,6 +84,18 @@ export default function Home() {
     </LineChart>
   );
 
+  let display;
+  if (accounts) {                 // all data are available
+    display = renderLineChart
+  } else {                        // deal with funk
+    if (conversionError.length > 0 || accountsError.length > 0) {     // display the API error(s)
+      display = <h1>{conversionError} {accountsError}</h1>
+    } else {
+      <h1>... LOADING ...</h1>
+    }
+  }
+    
+
   return (
     <div className={styles.container}>
       <Head>
@@ -97,7 +112,9 @@ export default function Home() {
         </div>
 
         {/* VISUALIZATION */}
-        {accounts ? renderLineChart : <h1>... LOADING ...</h1>}
+        {display}
+        {/* i'm sorry........ */}
+
       </main>
 
       <footer className={styles.footer}>
