@@ -4,10 +4,12 @@ import React, { useState, useEffect } from 'react'
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts'
 
 export default function Home() {
+  const SOLperLAM = 0.000000001;                       // A lamport has a value of 0.000000001 SOL.
   const [accounts, setAccounts] = useState(null);      // 20 largest accounts
   const [conversion, setConversion] = useState(null);  // exchange rate - SOL : USD
   const [currency, setCurrency] = useState('SOL');     // currency toggle SOL : USD
-  const SOLperLAM = 0.000000001;                       // A lamport has a value of 0.000000001 SOL.
+  const [accountsError, setAccountsError] = useState('');        // top accounts solana api errors
+  const [conversionError, setConversionError] = useState('');    // conversion api error
   
   useEffect(() => {
     const fetchAccounts = async () => {
@@ -18,16 +20,27 @@ export default function Home() {
           'Accept': 'application/json'
         },
       });
-      const resp = await response.json();
-      setAccounts(Object.values(resp.value));
+      const accountsData = await response.json();
+
+      if (Object.keys(accountsData).length === 0) {      // empty object, denotes error
+        setAccountsError('Cannot grab accounts right now, try again later.')
+      } else {
+        setAccounts(Object.values(accountsData.value));
+      }
     }
 
     const fetchConversion = async () => {
       const response = await fetch('/api/converter', {
         method: 'GET',
       });
-      const resp = await response.json();
-      setConversion(resp.last_price_usd)
+      const conversion = await response.json();
+      // console.log(conversion)
+      
+      if (conversion.message) {
+        setConversionError(conversion.message)
+      } else {
+        setConversion(conversion.last_price_usd)
+      }
     }
 
     fetchAccounts();
