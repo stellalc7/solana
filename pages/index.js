@@ -91,7 +91,7 @@ export default function Home() {
     if (conversionError.length > 0 || accountsError.length > 0) {     // display the API error(s)
       display = <h1>{conversionError} {accountsError}</h1>
     } else {
-      <h1>... LOADING ...</h1>    // why doesn't ever render
+      display = <h1>... LOADING ...</h1>
     }
   }
     
@@ -113,7 +113,6 @@ export default function Home() {
 
         {/* VISUALIZATION */}
         {display}
-        {/* i'm sorry........ */}
 
       </main>
 
